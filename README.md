@@ -1,10 +1,10 @@
-JKUAT Voting Management System
+UniElect Voting Management System
 📋 Overview
-A comprehensive, secure, and scalable voting management system designed for JKUAT university elections. Built with Next.js, TypeScript, Express.js, Tailwind CSS, Shadcn UI, and Prisma with Neon PostgreSQL.
+A comprehensive, secure, and scalable voting management system designed for university elections. Built with Next.js, TypeScript, Express.js, Tailwind CSS, Shadcn UI, and Prisma with Neon PostgreSQL.
 🚀 Features
 For Voters (Students)
 
-Secure Authentication: Login using JKUAT student ID
+Secure Authentication: Login using university student ID
 Real-time Election Access: View active elections based on eligibility
 Intuitive Voting Interface: Cast votes with confirmation steps
 Vote Verification: Receive cryptographic proof of vote submission
@@ -46,7 +46,7 @@ Security Controls: Manage access levels and permissions
 │                    Neon PostgreSQL Database                  │
 └─────────────────────────────────────────────────────────────┘
 📁 Complete File Structure
-jkuat-voting-system/
+unielect-voting-system/
 ├── frontend/                          # Next.js Frontend Application
 │   ├── app/                          # App Router Directory
 │   │   ├── (auth)/                   # Authentication Routes Group
