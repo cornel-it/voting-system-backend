@@ -21,12 +21,13 @@ interface ReceiptData {
 }
 
 export class CryptoService {
+  private static instance: CryptoService;
   private readonly algorithm = 'aes-256-gcm';
   private readonly saltRounds = 12;
   private readonly encryptionKey: Buffer;
   private readonly hmacKey: string;
 
-  constructor() {
+  private constructor() {
     // Initialize encryption keys from environment variables
     if (!process.env.ENCRYPTION_KEY || !process.env.HMAC_KEY) {
       throw new Error('Encryption keys not configured');
@@ -39,6 +40,13 @@ export class CryptoService {
     if (this.encryptionKey.length !== 32) {
       throw new Error('Invalid encryption key length. Expected 32 bytes.');
     }
+  }
+
+  public static getInstance(): CryptoService {
+    if (!CryptoService.instance) {
+      CryptoService.instance = new CryptoService();
+    }
+    return CryptoService.instance;
   }
 
   /**

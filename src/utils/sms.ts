@@ -17,12 +17,26 @@ export class SMSService {
     const authToken = process.env.TWILIO_AUTH_TOKEN;
     this.fromNumber = process.env.TWILIO_PHONE_NUMBER || '';
 
-    if (accountSid && authToken && this.fromNumber) {
-      this.client = twilio(accountSid, authToken);
-      this.isEnabled = true;
-      logger.info('SMS service initialized successfully');
+    // Validate credentials before initializing
+    const hasValidCredentials =
+      accountSid &&
+      authToken &&
+      this.fromNumber &&
+      accountSid.startsWith('AC') &&
+      accountSid.length > 10;
+
+    if (hasValidCredentials) {
+      try {
+        this.client = twilio(accountSid, authToken);
+        this.isEnabled = true;
+        logger.info('SMS service initialized successfully');
+      } catch (error) {
+        logger.warn('SMS service disabled: Failed to initialize Twilio client', error);
+        this.isEnabled = false;
+        this.client = {} as twilio.Twilio;
+      }
     } else {
-      logger.warn('SMS service disabled: Missing Twilio credentials');
+      logger.warn('SMS service disabled: Missing or invalid Twilio credentials');
       this.isEnabled = false;
       // Create a dummy client for development
       this.client = {} as twilio.Twilio;
