@@ -547,8 +547,15 @@ export class EmailService {
 
     const buffers: Buffer[] = [];
     doc.on('data', buffers.push.bind(buffers));
-    
-    return new Promise(async (resolve) => {
+
+    // Generate QR Code first (before the Promise)
+    const verificationUrl = `${process.env.FRONTEND_URL}/verify/${voteDetails.verificationCode}`;
+    const qrCodeDataUrl = await QRCode.toDataURL(verificationUrl, {
+      width: 100,
+      margin: 1,
+    });
+
+    return new Promise((resolve) => {
       doc.on('end', () => {
         const pdfData = Buffer.concat(buffers);
         resolve(pdfData);
@@ -590,13 +597,6 @@ export class EmailService {
            .font('Helvetica')
            .text(` ${detail.value}`, { width: 400 });
         yPosition += 30;
-      });
-
-      // Generate QR Code for verification
-      const verificationUrl = `${process.env.FRONTEND_URL}/verify/${voteDetails.verificationCode}`;
-      const qrCodeDataUrl = await QRCode.toDataURL(verificationUrl, {
-        width: 100,
-        margin: 1,
       });
 
       // Convert data URL to buffer and add to PDF
